@@ -1,0 +1,31 @@
+# Documentation on how to configure the bundle can be found at: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+
+    resolvers:
+        flysystem_resolver:
+            flysystem:
+                filesystem_service: oneup_flysystem.uploads_articles_filesystem
+                root_url: "/uploads/articles"
+                cache_prefix: media/cache
+                visibility: public
+
+    cache: flysystem_resolver
+
+    loaders:
+        articles_filesystem_loader:
+            flysystem:
+                filesystem_service: oneup_flysystem.uploads_articles_filesystem
+    data_loader: articles_filesystem_loader
+
+    filter_sets:
+        cache: ~
+        articles_preview:
+            quality: 75
+            filters:
+                thumbnail: { size: [ 480, 300 ], mode: outbound }
+        articles_detail:
+            quality: 90
+            filters:
+                thumbnail: { size: [ 750, 500 ], mode: outbound }

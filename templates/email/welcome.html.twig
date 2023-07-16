@@ -1,0 +1,9 @@
+{% apply inline_css(source('@css/email/email.css')) %}
+<!DOCTYPE html>
+<title>{{email.subject}}</title>
+<h1>{{ email.toName }}</h1>
+<tr><td>
+        <img src="{{ email.image('@images/cat1.jpg') }}" width="80" height="80">
+    </td> </tr>
+<h1><a href="{{ url('app_homepage') }}">МОЙ САЙТ</a> </h1>
+{% endapply %}

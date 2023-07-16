@@ -1,0 +1,45 @@
+{% extends 'base_content.html.twig' %}
+
+{% block header %}
+    {{ parent() }}
+    <title>{% block title %} Регистрация {% endblock %}</title>
+{% endblock %}
+
+         {% block content %}
+             <form method="post">
+                 {% if error %}
+                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                 {% endif %}
+
+                 <input type="hidden" name="_csrf_token"
+                        value="{{ csrf_token('authenticate') }}"
+                 >
+                 <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
+                 <label for="email">Email</label>
+                 <input type="email" name="email" id="email" class="form-control"  placeholder="Введите ваш Email..." required autofocus>
+                 <label for="firstName">Имя</label>
+                 <input type="text" name="firstName" id="firstName" class="form-control" placeholder="Введите ваш Email..." required autofocus>
+                 <label for="password">Пароль</label>
+                 <input type="password" name="password" id="password" class="form-control" placeholder="Введите ваш Email..." required autofocus><br>
+
+                 <div class="checkbox mb-3">
+                     <label>
+                         <input type="checkbox" name="_remember_me"> Согласен с условиями
+                     </label>
+                 </div>
+
+                 <button class="btn btn-lg btn-primary" type="submit">
+                     Войти
+                 </button>
+             </form><br>
+         {% endblock %}
+    {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+                integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                crossorigin="anonymous"></script>
+    {% endblock %}

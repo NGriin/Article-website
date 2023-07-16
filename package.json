@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "jquery": "^3.6.4",
+    "package.json": "^0.0.0",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "@symfony/webpack-encore": "^1.0.0",
+    "node-sass": "^8.0.0",
+    "sass-loader": "^13.2.0",
+    "webpack-notifier": "^1.15.0"
+  },
+  "name": "37",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Grinzayd Anastasiya <grinzayd1@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "encore production --progress"
+  }
+}

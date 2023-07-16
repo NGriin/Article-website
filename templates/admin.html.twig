@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block header %}
+    {{ parent() }}
+    <title>{% block title %}{% endblock %}</title>
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12">
+
+                <h1>Панель администрирования</h1>
+
+                <hr>
+                <ul>
+                    <li><a href="{{ path('app_admin_tag') }}">Администирование тегов</a> </li>
+                    <li><a href="{{ path('app_admin_comments') }}">Администирование комментариев</a> </li>
+                    <li><a href="{{ path('app_admin_articles') }}">Администирование статей</a> </li>
+                </ul>
+                <hr>
+            </div>
+
+        </div>
+    </div>
+    <script src="{{ asset('js/vote.js') }}"></script>
+{% endblock %}

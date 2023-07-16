@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-md-12 col-xl-8">
+
+                        {% for article in articles  %}
+                            <div class="article-container mb-2">
+                                <div class="row no-gutters border flex-md-row p-3 mb-4 shadow-sm">
+                                    <div class="col-auto d-block">
+                                        <img class="article-img" src="{{ article.imageFilename | imagine_filter('articles_preview') }}">
+                                    </div>
+                                    <a class="col px-4 d-flex flex-column article-item" href="{{ path('app_article_show', { slug: article.slug })}}">
+                                        <h5 class="mb-2">{{ article.title }}</h5>
+                                        <div class="d-flex mb-2">
+                                            <div class="text-muted align-self-center"><img class="article-author-img rounded-circle" src="{{ article.author.avatarUrl }}">{{article.author.firstName}}</div>
+                                            <div class="text-muted align-self-center ml-3"><i class="fas fa-clock size-is-"></i>{{ article.publishedAt ? article.publishedAt|ago }}</div>
+                                        </div>
+                                        <div class="mb-2 d-flex">
+                                            <span class="badge badge-primary mr-2"><i class="fas fa-comment"></i>{{ article.getNonDeletedComments|length }}</span>
+                                        </div>
+                                        {% include 'partical/article_tags.html.twig' with { tags: article.tags }%}
+                                        <div class="mb-2 text-muted">
+                                            {{ article.body|cached_markdown}}
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-12 col-xl-4">
+                        <div class="text-center bg-primary text-white py-1 border border-bottom-0">
+                            <h4 class="mb-0">Последние комменты</h4>
+                        </div>
+                        <div class="quotes-container bg-white shadow-sm border border-top-0 pb-2 pt-2 px-5">
+                            {% for comment in comments %}
+                            <div class="border-bottom mb-3">
+                                <div class="h4 text-left"> <a href="#">Когда пролил кофе на клавиатуру {{ comment.article.title }}</a></div>
+                                <p><i class="far fa-comment text-secondary"></i> {{ comment.content }}
+                                    <br> — <a href="#">{{ comment.authorName }}</a></p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

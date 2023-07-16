@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+{% block header %}
+    {{ parent() }}
+<title>{% block title %}{{ article.title }}{% endblock %}</title>
+{% endblock %}
+{% block body %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="row no-gutters border flex-md-row mb-4 shadow-sm bg-white featured-border">
+                <div class="article-detail col-sm-12">
+                    <div class="col-sm-12 p-2">
+                        <div class="media d-flex align-content-center">
+                            <img class="article-detail-image align-self-start mr-3 rounded" src="{{ article.imageFilename | imagine_filter('articles_detail') }}">
+                            <div class="media-body d-inline-block align-self-center">
+                                <h1 class="mb-2">{{article.title}}</h1>
+                                <div class="d-flex mb-2">
+                                    <div class="text-muted align-self-center">
+                                        <img class="article-author-img rounded-circle mr-2" src="https://robohash.org/флекс_абсолютович.jpg?set=set3">
+                                        {{article.author.firstName}}
+                                    </div>
+                                    <div class="text-muted align-self-center ml-4"><i class="fas fa-clock size-is-"></i> {{ article.publishedAt ? article.publishedAt|ago }} </div>
+                                </div>
+                                {% include 'partical/article_tags.html.twig' with { tags: article.tags }%}
+                                <div class="mb-2">
+                                    <div class="text-muted align-self-center article-detail-arrows">
+                                        {% if article.voteCount > 0 %}
+                                        <p class="text-success"> {{ article.voteCount }} </p>
+                                            {% elseif article.voteCount < 0 %}
+                                        <p class="text-danger"> {{ article.voteCount }} </p>
+                                            {% else %}
+                                                <p> {{ article.voteCount }} </p>
+                                        {% endif  %}
+                                        <button class="btn btn-success ml-3"><i class="fas fa-arrow-up"></i></button>
+                                        <button class="btn btn-danger"><i class="fas fa-arrow-down"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 mt-2 mb-4">
+                            {{article.body|cached_markdown}}
+                    </div>
+
+
+                    <div class="col-sm-12 mb-4">
+                        <h3><i class="pr-3 far fa-comment text-secondary"></i>{{ article.getNonDeletedComments|length }}</h3>
+                        <hr>
+
+                        <div class="row mb-4">
+                            <div class="col-sm-12">
+                                <div class="comment-container align-self-start col-sm-6">
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="2"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Комментировать</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% for comment in article.getNonDeletedComments %}
+                        <div class="row mt-2">
+                            <div class="col-sm-12">
+                                <div class="media">
+                                    <img class="align-self-start comment-img rounded-circle" src="{{ asset('images/profile.png') }}">
+                                    <div class="media-body align-self-start col-sm-6">
+                                        <b>{{comment.authorName}}</b>
+                                        <small>{{comment.createdAt|ago}} {% if comment.deletedAt %} DELETED {% endif %}</small>
+                                        <br>
+                                        <span class="comment"> {{ comment.content }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+    <script src="{{ asset('js/vote.js') }}"></script>
+{% endblock %}

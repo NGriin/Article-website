@@ -1,0 +1,10 @@
+<title>{{ email.subject }}</title>
+<tr>
+    {% for article in articles %}
+</tr>
+<tr>
+    <td>{{ article.id }}</td>
+    <td>{{ article.title }}</td>
+    <td><a href="{{ url('app_article_show', {slug: article.slug}) }}">Перейти на страницу статьи</a> </td>
+</tr>
+{% endfor %}

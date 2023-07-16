@@ -1,0 +1,83 @@
+{% extends 'base_content.html.twig' %}
+{% block header %}
+    {{ parent() }}
+    <title>{% block title %} Упарвление статьями{% endblock %}</title>
+{% endblock %}
+        {% block content %}
+            <h1>Управление статьями({{ pagination.totalItemCount }})</h1>
+
+            <form>
+                <div class="input-group mb-3">
+                    <input type="text"
+                           name="q"
+                           class="form-control"
+                           placeholder="Найти..."
+                           value="{{ app.request.query.get('q') }}"
+                    >
+
+                    <select name="limit" class="form-select">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Заголовок</th>
+                    <th>Описание</th>
+                    <th>Автор</th>
+                    <th>Опубликована</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for article in pagination %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('app_article_show', {slug: article.slug }) }}">
+                                {{ article.title }}
+                            </a>
+                        </td>
+
+                        <td>
+                                {{ article.description }}
+                        </td>
+
+                        <td>{{ article.author.firstName }}</td>
+                        <td><i class="fas fa-{{ article.isPublished ? 'check' : 'times' }}"></i></td>
+                        <td><a href="{{ path('app_admin_articles_edit', {id: article.id })}}"><i class="fas fa-pen"></i></a></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">
+                            Нет статей
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+            {{ knp_pagination_render(pagination) }}
+            {#
+            {% block footer %}
+                {% include('views/footer.html.twig') %}
+            {% endblock %}
+            #}
+        {% endblock %}
+    {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+                integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                crossorigin="anonymous"></script>
+    {% endblock %}

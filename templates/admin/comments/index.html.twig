@@ -1,0 +1,82 @@
+{% extends 'base_content.html.twig' %}
+{% block header %}
+    {{ parent() }}
+    <title>{% block title %} Упарвление комментариями{% endblock %}</title>
+{% endblock %}
+        {% block content %}
+    <h1>Управление комментариями({{ pagination.totalItemCount }})</h1>
+
+    <form>
+        <div class="input-group mb-3">
+            <input type="text"
+                   name="q"
+                   class="form-control"
+                   placeholder="Найти..."
+                   value="{{ app.request.query.get('q') }}"
+            >
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <div class="form-check">
+            <input type="checkbox"
+                   name="showDeleted"
+                   class="form-check-input"
+                  {% if app.request.query.has('showDeleted')%} checked {% endif %}
+            >
+                <label class="form-check-label"> Показать удаленные</label>
+            </div>
+        </div>
+    </form>
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Статья</th>
+            <th>Автор</th>
+            <th>Комментарий</th>
+            <th>Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in pagination %}
+            <tr>
+                <td>
+                    <a href="{{ path('app_article_show', {slug: comment.article.slug }) }}">
+                        {{ comment.article.title }}
+                    </a>
+                </td>
+                <td>{{ comment.authorName }}</td>
+                <td style="width: 20%;">{{ comment.content|u.truncate(40, '...')}} </td>
+                <td>{{ comment.createdAt|ago }} {% if comment.deletedAt %} DELETED {% endif %}</td>
+            </tr>
+            {% else %}
+        <tr>
+            <td colspan="4">
+                Нет подходящих комментариев
+            </td>
+        </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+{{ knp_pagination_render(pagination) }}
+{#
+        {% block footer %}
+            {% include('views/footer.html.twig') %}
+        {% endblock %}
+#}
+        {% endblock %}
+    {% block javascripts %}
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+                integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                crossorigin="anonymous"></script>
+    {% endblock %}
+
